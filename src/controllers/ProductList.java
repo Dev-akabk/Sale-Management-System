@@ -1,6 +1,8 @@
 package controllers;
 
 import entity.Product;
+import exception.InvalidInputException;
+import exception.ItemNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +44,22 @@ public class ProductList {
             }
         }
         return null;
+    }
+    
+    
+    public void updateProduct(String productId, String newName, double newPrice) throws ItemNotFoundException, InvalidInputException {
+        Product foundProduct = findProductById(productId);
+        if (foundProduct == null) {
+            throw new ItemNotFoundException("Product with ID: " + productId + " not found for update!");
+        }
+        
+        if (newPrice <= 0) {
+            throw new InvalidInputException("Updated product price must be greater than 0!");
+        }
+
+        foundProduct.setProductName(newName); 
+        foundProduct.setPrice(newPrice);
+        System.out.println("Product updated successfully.\n");
     }
 
     public boolean removeProductById(String productId) {
