@@ -1,4 +1,4 @@
-package entity;
+package entities;
 
 public class VIPCustomer extends Customer {
     private double discountRate;
