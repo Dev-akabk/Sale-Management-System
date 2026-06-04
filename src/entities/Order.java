@@ -3,7 +3,8 @@ package entities;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import exceptions.InvalidInputException;
+import utils.Validation;
 public class Order {
     private String orderId;
     private Date orderDate;
@@ -12,7 +13,18 @@ public class Order {
     private List<OrderDetail> orderDetails;
 
     // Constructor
-    public Order(String orderId, Customer customer) {
+    public Order(String orderId, Customer customer) throws InvalidInputException {
+        // Validate input data
+        Validation.checkOrderIdFormat(orderId);
+        if (customer == null) {
+            throw new InvalidInputException("Customer cannot be null for an order!");
+        }
+        Validation.checkEmptyString(customer.getCustomerId(), "Customer ID");
+        Validation.checkEmptyString(customer.getName(), "Customer name");
+        Validation.checkEmptyString(customer.getPhone(), "Customer phone");
+        Validation.checkPhone(customer.getPhone());
+        Validation.checkEmptyString(customer.getAddress(), "Customer address");
+        
         this.orderId = orderId;
         this.customer = customer;
         this.orderDetails = new ArrayList<>();

@@ -1,5 +1,7 @@
 package entities;
 import utils.Validation;
+import exceptions.InvalidInputException;
+
 public class Customer {
     private String customerId;
     private String name;
@@ -7,7 +9,7 @@ public class Customer {
     private String address;
 
     // Constructor
-    public Customer(String customerId, String name, String phone, String address) {
+    public Customer(String customerId, String name, String phone, String address) throws InvalidInputException {
         // Validate input data
         Validation.checkCustomerIdFormat(customerId);
         Validation.checkEmptyString(name, "Customer name");

@@ -1,5 +1,6 @@
 package entities;
-
+import utils.Validation;
+import exceptions.InvalidInputException;
 public class Product {
     private String productId;
     private String productName;
@@ -8,7 +9,16 @@ public class Product {
     private int stockQuantity;
 
     // Constructor
-    public Product(String productId, String productName, String category, double price, int stockQuantity) {
+    public Product(String productId, String productName, String category, double price, int stockQuantity) throws InvalidInputException {
+        //validate input data
+        Validation.checkProductIdFormat(productId);
+        Validation.checkEmptyString(productName, "Product name");
+        Validation.checkEmptyString(category, "Product category");
+        Validation.checkNonNegativeDouble(price, "Product price");
+        Validation.checkNonNegativeInt(stockQuantity, "Stock quantity");
+        Validation.checkPositiveDouble(price, "Product price");
+        Validation.checkPositiveInt(stockQuantity, "Stock quantity");
+
         this.productId = productId;
         this.productName = productName;
         this.category = category;
