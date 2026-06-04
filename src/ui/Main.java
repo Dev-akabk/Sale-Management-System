@@ -19,9 +19,11 @@ public class Main {
         ProductList productList = new ProductList();
 
         System.out.println("-- Testing empty list:");
-        productList.displayAllProducts();
+        
 
         try {
+            productList.displayAllProducts();
+
             Product p1 = new Product("P_001", "Laptop",     "Electronics", 999.99, 20);
             Product p2 = new Product("P_002", "Smartphone", "Electronics", 699.99, 30);
             Product p3 = new Product("P_003", "Keyboard",   "Accessories", 149.99, 50);
@@ -105,7 +107,7 @@ public class Main {
 
         try {
             pl.removeProductById("P_999");
-        } catch (ItemNotFoundException e) {
+        } catch (ItemNotFoundException | InvalidInputException e) {
             System.out.println("Caught expected error: " + e.getMessage());
         }
     }
