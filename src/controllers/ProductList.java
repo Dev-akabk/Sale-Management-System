@@ -23,25 +23,26 @@ public class ProductList {
     }
         
 
-    public void displayAllProducts() {
+    public void displayAllProducts() throws InvalidInputException {
         if (products.isEmpty()) {
-            System.out.println("The product list is empty.");
-            return;
-
+            throw new InvalidInputException("Product list is empty!");
         }
         for (Product p : products) {
             System.out.println(p.toString());
-
         }
-
     }
 
-    public Product findProductById(String productId) {
+    public Product findProductById(String productId) throws InvalidInputException {
+        if (productId == null || productId.trim().isEmpty()) {
+            throw new InvalidInputException("Invalid product ID!");
+        }
         for (Product p : products) {
             if (p.getProductId().equalsIgnoreCase(productId)) {
                 return p;
             }
         }
+        //return null vi neu return exception thi cac method khac se khong thuc thi duoc,
+        //neu return null thi cac method khac van thuc thi duoc va chi can xu ly null o do la duoc
         return null;
     }
     
@@ -61,10 +62,10 @@ public class ProductList {
         System.out.println("Product updated successfully.\n");
     }
 
-    public boolean removeProductById(String productId) throws ItemNotFoundException {
+    public boolean removeProductById(String productId) throws ItemNotFoundException, InvalidInputException {
         Product foundProduct = findProductById(productId);
         if (foundProduct == null) {
-            throw new ItemNotFoundException("Product with ID " + productId + " not found for deletion!");
+            throw new ItemNotFoundException("Product with ID: " + productId + " not found for removal!");
         }
         return products.remove(foundProduct);
     }
