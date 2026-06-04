@@ -1,5 +1,5 @@
 package entities;
-
+import utils.Validation;
 public class Customer {
     private String customerId;
     private String name;
@@ -8,6 +8,13 @@ public class Customer {
 
     // Constructor
     public Customer(String customerId, String name, String phone, String address) {
+        // Validate input data
+        Validation.checkCustomerIdFormat(customerId);
+        Validation.checkEmptyString(name, "Customer name");
+        Validation.checkEmptyString(phone, "Customer phone");
+        Validation.checkPhone(phone);
+        Validation.checkEmptyString(address, "Customer address");
+
         this.customerId = customerId;
         this.name = name;
         this.phone = phone;
