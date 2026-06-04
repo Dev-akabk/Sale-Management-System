@@ -70,7 +70,7 @@ public class CustomerList {
     public boolean removeCustomerById(String customerId) throws ItemNotFoundException {
         Customer foundCustomer = findCustomerById(customerId);
         if (foundCustomer == null) {
-            throw new ItemNotFoundException(" not found for removal!" + "Customer with ID " + customerId);
+            throw new ItemNotFoundException("Customer with ID " + customerId + " not found for deletion!");
         }
         return customers.remove(foundCustomer);
     }
