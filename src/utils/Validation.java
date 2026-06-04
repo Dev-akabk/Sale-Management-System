@@ -1,10 +1,6 @@
 package utils;
 
-class InvalidInputException extends Exception {
-    public InvalidInputException(String message) {
-        super(message);
-    }
-}
+import exceptions.InvalidInputException;
 
 public class Validation {
     // id cua customer se bat dau bang 'C' va theo sau la 3 chu so (VD: C_001 C_002,...)
