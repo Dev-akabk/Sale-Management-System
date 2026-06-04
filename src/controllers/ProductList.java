@@ -1,7 +1,7 @@
 package controllers;
 
-import exception.InvalidInputException;
-import exception.ItemNotFoundException;
+import exceptions.InvalidInputException;
+import exceptions.ItemNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import entities.Product;

@@ -87,4 +87,10 @@ public class Validation {
             throw new InvalidInputException(fieldName + " cannot be negative!");
         }
     }
+    public static void checkNonNegativeDouble(double value, String fieldName) throws InvalidInputException {
+        if (value < 0) {
+            throw new InvalidInputException(fieldName + " cannot be negative!");
+        }
+    }
+    
 }
