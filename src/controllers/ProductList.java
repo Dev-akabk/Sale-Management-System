@@ -14,15 +14,14 @@ public class ProductList {
         this.products = new ArrayList<>();
     }
 
-    public void addProduct(Product product) {
-        if (product != null) {
-            this.products.add(product);
-            System.out.println("Product added successfully.\n");
-
-        } else {
-            System.out.println("Cannot add a null.\n");
+    public void addProduct(Product product) throws InvalidInputException {
+        if (product == null) {
+            throw new InvalidInputException("Cannot add a null product!");
         }
+        this.products.add(product);
+        System.out.println("Product added successfully.\n");
     }
+        
 
     public void displayAllProducts() {
         if (products.isEmpty()) {
@@ -62,13 +61,12 @@ public class ProductList {
         System.out.println("Product updated successfully.\n");
     }
 
-    public boolean removeProductById(String productId) {
+    public boolean removeProductById(String productId) throws ItemNotFoundException {
         Product foundProduct = findProductById(productId);
-        if (foundProduct != null) {
-            return products.remove(foundProduct);
-
+        if (foundProduct == null) {
+            throw new ItemNotFoundException("Product with ID " + productId + " not found for deletion!");
         }
-        return false;
+        return products.remove(foundProduct);
     }
 
     public List<Product> getProducts() {
