@@ -66,7 +66,6 @@ public class Main {
             System.out.println("-- Update C_001:");
             customerList.updateCustomer("C_001", "Nguyen Van An", "0912345678");
             customerList.displayAllCustomers();
-
             System.out.println("-- Remove C_001:");
             customerList.removeCustomerById("C_001");
             customerList.displayAllCustomers();

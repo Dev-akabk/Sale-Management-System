@@ -21,7 +21,7 @@ public class CustomerList {
             throw new InvalidInputException("Customer data cannot be null!");
         }
         
-        // Kiểm tra trùng mã khách hàng
+        // Check for duplicate customer ID before adding
         if (findCustomerById(customer.getCustomerId()) != null) {
             throw new InvalidInputException("Customer ID " + customer.getCustomerId() + " already exists!");
         }
@@ -60,7 +60,7 @@ public class CustomerList {
             throw new InvalidInputException("New phone number cannot be empty!");
         }
 
-        // Cập nhật dữ liệu bằng setter
+        // Update customer information
         foundCustomer.setName(newName);
         foundCustomer.setPhone(newPhone);
         System.out.println("Customer updated successfully.\n");
@@ -75,7 +75,7 @@ public class CustomerList {
         return customers.remove(foundCustomer);
     }
 
-    // Hàm lấy toàn bộ danh sách khách hàng
+    // Function to get the entire list of customers
     public List<Customer> getCustomers() {
         return this.customers;
     }
