@@ -1,4 +1,5 @@
 package entities;
+
 import utils.Validation;
 import exceptions.InvalidInputException;
 
@@ -7,6 +8,7 @@ public class Customer {
     private String name;
     private String phone;
     private String address;
+    private double totalSpend;
 
     // Constructor
     public Customer(String customerId, String name, String phone, String address) throws InvalidInputException {
@@ -21,6 +23,7 @@ public class Customer {
         this.name = name;
         this.phone = phone;
         this.address = address;
+        this.totalSpend = 0.0;
     }
 
     // Getters & Setters
@@ -56,9 +59,15 @@ public class Customer {
         this.address = address;
     }
 
+
+
+    public abstract double calculateTotal(double baseAmount);
+
+    public abstract void displayInfo();
+
     @Override
     public String toString() {
-        return "Customer{" + "customerId=" + customerId + ", name=" + name + 
-               ", phone=" + phone + ", address=" + address + '}';
+        return "customerId=" + customerId + ", name=" + name + 
+               ", phone=" + phone + ", address=" + address + ", totalSpend=" + totalSpend;
     }
 }

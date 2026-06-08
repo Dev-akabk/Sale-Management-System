@@ -1,8 +1,11 @@
 package controllers;
 
 import entities.Customer;
+import entities.RegularCustomer;
+import entities.VIPCustomer;
 import exceptions.InvalidInputException;
 import exceptions.ItemNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +24,7 @@ public class CustomerList {
             throw new InvalidInputException("Customer data cannot be null!");
         }
         
-        // Check for duplicate customer ID before adding
+
         if (findCustomerById(customer.getCustomerId()) != null) {
             throw new InvalidInputException("Customer ID " + customer.getCustomerId() + " already exists!");
         }
@@ -60,7 +63,7 @@ public class CustomerList {
             throw new InvalidInputException("New phone number cannot be empty!");
         }
 
-        // Update customer information
+
         foundCustomer.setName(newName);
         foundCustomer.setPhone(newPhone);
         System.out.println("Customer updated successfully.\n");
@@ -75,8 +78,73 @@ public class CustomerList {
         return customers.remove(foundCustomer);
     }
 
-    // Function to get the entire list of customers
+
     public List<Customer> getCustomers() {
         return this.customers;
     }
+
+
+    public void saveToFile(String filePath) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            for (Customer c : customers) {
+                if (c instanceof RegularCustomer) {
+                    RegularCustomer rc = (RegularCustomer) c;
+                    writer.write(String.format("REGULAR,%s,%s,%s,%s,%.2f,%d",
+                            rc.getCustomerId(), rc.getName(), rc.getPhone(), 
+                            rc.getAddress(), rc.getTotalSpend(), rc.getLoyaltyPoints()));
+                } else if (c instanceof VIPCustomer) {
+                    VIPCustomer vc = (VIPCustomer) c;
+                    
+                    writer.write(String.format("VIP,%s,%s,%s,%s,%.2f,%.4f",
+                            vc.getCustomerId(), vc.getName(), vc.getPhone(), 
+                            vc.getAddress(), vc.getTotalSpend(), vc.getDiscountRate()));
+                }
+                writer.newLine();
+            }
+            System.out.println("Customer records saved successfully.");
+        } catch (IOException e) {
+            System.err.println("Error saving customer data: " + e.getMessage());
+        }
+    }
+
+    
+    public void loadFromFile(String filePath) {
+        File file = new File(filePath);
+        if (!file.exists()) return;
+
+        this.customers.clear();
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.trim().isEmpty()) continue;
+                
+                String[] tokens = line.split(",");
+                String type = tokens[0];
+                String id = tokens[1];
+                String name = tokens[2];
+                String phone = tokens[3];
+                String address = tokens[4];
+                double totalSpend = Double.parseDouble(tokens[5]);
+
+                Customer customer = null;
+                if (type.equalsIgnoreCase("REGULAR")) {
+                    int loyaltyPoints = Integer.parseInt(tokens[6]);
+                    customer = new RegularCustomer(id, name, phone, address, loyaltyPoints);
+                } else if (type.equalsIgnoreCase("VIP")) {
+                    
+                    double discountRate = Double.parseDouble(tokens[6]);
+                    customer = new VIPCustomer(id, name, phone, address, discountRate);
+                }
+
+                if (customer != null) {
+                    customer.setTotalSpend(totalSpend);
+                    this.customers.add(customer);
+                }
+            }
+            System.out.println("Customer records loaded successfully.");
+        } catch (Exception e) {
+            System.err.println("Error loading customer data: " + e.getMessage());
+        }
+    }
+
 }
