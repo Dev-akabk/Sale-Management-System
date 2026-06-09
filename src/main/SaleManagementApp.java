@@ -1,16 +1,16 @@
-package ui;
+package main;
 
 import controllers.CustomerList;
 import controllers.OrderList;
 import controllers.ProductList;
-import entities.Customer;
-import entities.Product;
-import entities.VIPCustomer;
 import exceptions.InvalidInputException;
 import exceptions.ItemNotFoundException;
 import exceptions.OutOfStockException;
+import models.Customer;
+import models.Product;
+import models.VIPCustomer;
 
-public class Main {
+public class SaleManagementApp {
 
     public static void main(String[] args) {
 

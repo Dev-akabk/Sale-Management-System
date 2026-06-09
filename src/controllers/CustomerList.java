@@ -1,8 +1,8 @@
 package controllers;
 
-import entities.Customer;
-import entities.RegularCustomer;
-import entities.VIPCustomer;
+import models.Customer;
+import models.RegularCustomer;
+import models.VIPCustomer;
 import exceptions.InvalidInputException;
 import exceptions.ItemNotFoundException;
 import java.io.*;

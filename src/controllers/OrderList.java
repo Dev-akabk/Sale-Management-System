@@ -1,8 +1,8 @@
 package controllers;
 
-import entities.Customer;
-import entities.Order;
-import entities.Product;
+import models.Customer;
+import models.Order;
+import models.Product;
 import exceptions.InvalidInputException;
 import exceptions.ItemNotFoundException;
 import exceptions.OutOfStockException;
