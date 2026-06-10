@@ -3,7 +3,8 @@ package models;
 import utils.Validation;
 import exceptions.InvalidInputException;
 
-public class Customer {
+//customer la lop cha(vip, regular)
+public abstract class Customer {
     private String customerId;
     private String name;
     private String phone;
