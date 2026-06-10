@@ -5,6 +5,7 @@ import exceptions.InvalidInputException;
 
 //customer la lop cha(vip, regular)
 public abstract class Customer {
+    //Fields (Encapsulation)
     private String customerId;
     private String name;
     private String phone;
@@ -12,11 +13,12 @@ public abstract class Customer {
     private double totalSpend;
 
     // Constructor
-    public Customer(String customerId, String name, String phone, String address) throws InvalidInputException {
+    public Customer(String customerId, String name, String phone, String address)
+             throws InvalidInputException {
         // Validate input data
         Validation.checkCustomerIdFormat(customerId);
-        Validation.checkEmptyString(name, "Customer name");
-        Validation.checkEmptyString(phone, "Customer phone");
+        Validation.checkEmptyString(name,    "Customer name");
+        Validation.checkEmptyString(phone,   "Customer phone");
         Validation.checkPhone(phone);
         Validation.checkEmptyString(address, "Customer address");
 
@@ -27,48 +29,34 @@ public abstract class Customer {
         this.totalSpend = 0.0;
     }
 
-    // Getters & Setters
-    public String getCustomerId() {
-        return customerId;
-    }
+    // Getters & Setters---------------------------------------------
+    public String getCustomerId()             { return customerId; }
+    public void   setCustomerId(String id)    { this.customerId = id; }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
+    public String getName()                   { return name; }
+    public void   setName(String name)        { this.name = name; }
 
-    public String getName() {
-        return name;
-    }
+    public String getPhone()                  { return phone; }
+    public void   setPhone(String phone)      { this.phone = phone; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public String getAddress()                { return address; }
+    public void   setAddress(String address)  { this.address = address; }
 
-    public String getPhone() {
-        return phone;
-    }
+    public double getTotalSpend()             { return totalSpend; }
+    public void   setTotalSpend(double spend) { this.totalSpend = spend; }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-
-
+    /*
+    Abstract method
+    -RegularCustomer: use loyalty points discount
+    -VipCustomer: 10% discount
+     */
     public abstract double calculateTotal(double baseAmount);
 
     public abstract void displayInfo();
 
     @Override
     public String toString() {
-        return "customerId=" + customerId + ", name=" + name + 
-               ", phone=" + phone + ", address=" + address + ", totalSpend=" + totalSpend;
+        return String.format("ID: %-6s | Name: %-20s | Phone: %s | Address: %-15s | Spent: %.2f",
+                customerId, name, phone, address, totalSpend);
     }
 }
