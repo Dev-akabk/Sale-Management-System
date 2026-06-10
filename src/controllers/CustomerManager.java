@@ -1,18 +1,10 @@
 package controllers;
 
 import models.Customer;
-import models.RegularCustomer;
-import models.VIPCustomer;
 import exceptions.InvalidInputException;
 import exceptions.ItemNotFoundException;
 import utils.Validation;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +22,7 @@ public class CustomerManager {
     public void addCustomer(Customer customer) throws InvalidInputException {
         if (customer == null) {
             throw new InvalidInputException("Customer data cannot be null!");
-        }
-        
+        }        
 
         if (findCustomerById(customer.getCustomerId()) != null) {
             throw new InvalidInputException(
