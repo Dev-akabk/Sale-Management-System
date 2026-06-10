@@ -2,7 +2,7 @@ package views;
 
 import controllers.CustomerManager;
 import controllers.OrderManager;
-import controllers.ProductList;
+import controllers.ProductManager;
 import exceptions.InvalidInputException;
 import exceptions.ItemNotFoundException;
 import exceptions.OutOfStockException;
@@ -57,7 +57,7 @@ public class ConsoleMenu {
         System.out.print("Please choose an option (1-5): ");
     }
 
-    public static void manageProducts(ProductList productManager, Scanner scanner) {
+    public static void manageProducts(ProductManager productManager, Scanner scanner) {
         boolean productRunning = true;
         while (productRunning) {
             displayProductMenu();
@@ -172,7 +172,7 @@ public class ConsoleMenu {
         }
     }
 
-    public static void manageOrders(OrderManager orderManager, ProductList productManager, CustomerManager customerManager, Scanner scanner) {
+    public static void manageOrders(OrderManager orderManager, ProductManager productManager, CustomerManager customerManager, Scanner scanner) {
         boolean orderRunning = true;
         while (orderRunning) {
             displayOrderMenu();

@@ -2,7 +2,7 @@ package main;
 
 import controllers.CustomerManager;
 import controllers.OrderManager;
-import controllers.ProductList;
+import controllers.ProductManager;
 import models.Product;
 import models.RegularCustomer;
 import models.VIPCustomer;
@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class SaleManagementApp {
 
     private static final Scanner scanner = new Scanner(System.in);
-    private static final ProductList productManager = new ProductList();
+    private static final ProductManager productManager = new ProductManager();
     private static final CustomerManager customerManager = new CustomerManager();
     private static final OrderManager orderManager = new OrderManager();
 

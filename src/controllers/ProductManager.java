@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import models.Product;
 
-public class ProductList {
+public class ProductManager {
 
     private final List<Product> products;
 
-    public ProductList() {
+    public ProductManager() {
         this.products = new ArrayList<>();
     }
 
