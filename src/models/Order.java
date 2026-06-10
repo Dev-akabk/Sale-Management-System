@@ -1,77 +1,56 @@
 package models;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import exceptions.InvalidInputException;
 import utils.Validation;
+
+
+//LocalDate is used to get current date for easy sort and filter by date
+
 public class Order {
-    private String orderId;
-    private Date orderDate;
-    private double totalAmount;
-    private Customer customer;
+    private String            orderId;
+    private LocalDate         orderDate;
+    private double            totalAmount;
+    private Customer          customer;
     private List<OrderDetail> orderDetails;
 
     // Constructor
-    public Order(String orderId, Customer customer) throws InvalidInputException {
-        // Validate input data
+    public Order(String orderId, Customer customer)
+        throws InvalidInputException {
         Validation.checkOrderIdFormat(orderId);
         if (customer == null) {
             throw new InvalidInputException("Customer cannot be null for an order!");
         }
         Validation.checkEmptyString(customer.getCustomerId(), "Customer ID");
-        Validation.checkEmptyString(customer.getName(), "Customer name");
-        Validation.checkEmptyString(customer.getPhone(), "Customer phone");
+        Validation.checkEmptyString(customer.getName(),       "Customer name");
+        Validation.checkEmptyString(customer.getPhone(),      "Customer phone");
         Validation.checkPhone(customer.getPhone());
-        Validation.checkEmptyString(customer.getAddress(), "Customer address");
+        Validation.checkEmptyString(customer.getAddress(),    "Customer address");
         
-        this.orderId = orderId;
-        this.customer = customer;
+        this.orderId      = orderId;
+        this.customer     = customer;
         this.orderDetails = new ArrayList<>();
-        this.orderDate = new Date(); // Current date
-        this.totalAmount = 0.0;
+        this.orderDate    = LocalDate.now(); // Current date
+        this.totalAmount  = 0.0;
     }
 
-    // Getters & Setters
-    public String getOrderId() {
-        return orderId;
-    }
+    // Getters & Setters-------------------------------------------
+    public String            getOrderId()                        { return orderId; }
+    public void              setOrderId(String id)               { this.orderId = id; }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
+    public LocalDate         getOrderDate()                      { return orderDate; }
+    public void              setOrderDate(LocalDate date)        { this.orderDate = date; }
 
-    public Date getOrderDate() {
-        return orderDate;
-    }
+    public double            getTotalAmount()                    { return totalAmount; }
+    public void              setTotalAmount(double amount)       { this.totalAmount = amount; }
 
-    public void setOrderDate(Date orderDate) {
-        this.orderDate = orderDate;
-    }
+    public Customer          getCustomer()                       { return customer; }
+    public void              setCustomer(Customer c)             { this.customer = c; }
 
-    public double getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(double totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public List<OrderDetail> getOrderDetails() {
-        return orderDetails;
-    }
-
-    public void setOrderDetails(List<OrderDetail> orderDetails) {
-        this.orderDetails = orderDetails;
-    }
+    public List<OrderDetail> getOrderDetails()                   { return orderDetails; }
+    public void              setOrderDetails(List<OrderDetail> d){ this.orderDetails = d; }
 
     // Add item
     public void addProduct(Product product, int quantity) {
@@ -80,23 +59,26 @@ public class Order {
 
     // Calc total
     public void calculateTotal() {
-        double sum = 0.0;
+        double subtotal = 0.0;
         for (OrderDetail detail : orderDetails) {
-            sum += detail.getProduct().getPrice() * detail.getQuantity();
+            //san pham * gia tien * so luong
+            subtotal += detail.getProduct().getPrice() * detail.getQuantity();
         }
         
         // VIP discount check
-        if (customer instanceof VIPCustomer) {
-            VIPCustomer vip = (VIPCustomer) customer;
-            sum = sum * (1 - vip.getDiscountRate());
-        }
+        // if (customer instanceof VIPCustomer) {
+        //     VIPCustomer vip = (VIPCustomer) customer;
+        //     sum = sum * (1 - vip.getDiscountRate());
+        // }
         
-        this.totalAmount = sum;
+        //khong can instanceof, chi can goi method calculateTotal cua customer,
+        // no se tu dong check loai khach hang va ap dung discount tuong ung
+        this.totalAmount =  customer.calculateTotal(subtotal);
     }
 
     @Override
     public String toString() {
-        return "Order{" + "orderId=" + orderId + ", customer=" + customer.getName() + 
-               ", totalAmount=" + totalAmount + ", orderDate=" + orderDate + '}';
+        return String.format("Order ID: %-6s | Customer: %-20s | Date: %s | Total: %.2f VND",
+                orderId, customer.getName(), orderDate, totalAmount);
     }
 }
