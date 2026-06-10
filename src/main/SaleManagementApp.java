@@ -1,6 +1,6 @@
 package main;
 
-import controllers.CustomerList;
+import controllers.CustomerManager;
 import controllers.OrderList;
 import controllers.ProductList;
 import exceptions.InvalidInputException;
@@ -50,7 +50,7 @@ public class SaleManagementApp {
 
         // ── Customer tests ─────────────────────────────────────────────────────
         System.out.println("\n===== CUSTOMER MANAGER =====");
-        CustomerList customerList = new CustomerList();
+        CustomerManager customerList = new CustomerManager();
 
         try {
             Customer c1 = new Customer("C_001", "Nguyen Van A", "0901234567", "Ha Noi");
