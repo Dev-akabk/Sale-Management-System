@@ -89,4 +89,10 @@ public class Validation {
         }
     }
     
+    public static void checkDiscountRate(double discountRate) throws InvalidInputException {
+        if (discountRate < 0.0 || discountRate > 1.0) {
+            throw new InvalidInputException("Discount rate must be between 0.0 and 1.0!");
+        }
+    }
+    
 }

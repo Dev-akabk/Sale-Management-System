@@ -1,13 +1,14 @@
 package main;
 
 import controllers.CustomerManager;
-import controllers.OrderList;
+import controllers.OrderManager;
 import controllers.ProductList;
 import exceptions.InvalidInputException;
 import exceptions.ItemNotFoundException;
 import exceptions.OutOfStockException;
 import models.Customer;
 import models.Product;
+import models.RegularCustomer;
 import models.VIPCustomer;
 
 public class SaleManagementApp {
@@ -53,7 +54,7 @@ public class SaleManagementApp {
         CustomerManager customerList = new CustomerManager();
 
         try {
-            Customer c1 = new Customer("C_001", "Nguyen Van A", "0901234567", "Ha Noi");
+            Customer c1 = new RegularCustomer("C_001", "Nguyen Van A", "0901234567", "Ha Noi", 0);
             Customer c2 = new VIPCustomer("C_002", "Tran Thi B", "0987654321", "HCM City", 0.10);
 
             System.out.println("-- Adding customers:");
@@ -76,7 +77,7 @@ public class SaleManagementApp {
 
         // ── Order tests ────────────────────────────────────────────────────────
         System.out.println("\n===== ORDER MANAGER =====");
-        OrderList orderList = new OrderList();
+        OrderManager orderList = new OrderManager();
 
         try {
             Customer vip = customerList.findCustomerById("C_002");

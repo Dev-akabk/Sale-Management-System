@@ -26,7 +26,7 @@ public class CustomerManager {
     // }
     //ko can constructor vi da khai bao va khoi tao o tren roi
 
-
+    //CRUD methods:
     public void addCustomer(Customer customer) throws InvalidInputException {
         if (customer == null) {
             throw new InvalidInputException("Customer data cannot be null!");

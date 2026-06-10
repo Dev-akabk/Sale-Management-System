@@ -21,6 +21,11 @@ public class VIPCustomer extends Customer {
     // Getters & Setters
     public double getDiscountRate()                { return discountRate; }
     public void   setDiscountRate(double rate)     { this.discountRate = rate; }
+
+    @Override
+    public double calculateTotal(double baseAmount) {
+        return baseAmount * (1.0 - discountRate);
+    }
     
     //display info
     @Override

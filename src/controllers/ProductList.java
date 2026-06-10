@@ -4,7 +4,7 @@ import exceptions.InvalidInputException;
 import exceptions.ItemNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import entities.Product;
+import models.Product;
 
 public class ProductList {
 
