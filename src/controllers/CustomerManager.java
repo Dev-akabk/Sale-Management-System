@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Customer;
+import models.Product;
 import exceptions.InvalidInputException;
 import exceptions.ItemNotFoundException;
 import utils.Validation;
@@ -43,13 +44,35 @@ public class CustomerManager {
         }
     }
 
-    //Tim kiem khach hang theo ID
+    //Tim kiem khach hang theo ID cho find va remove
     public Customer findCustomerById(String customerId) {
 
         if (customerId == null || customerId.trim().isEmpty()) return null;
         return customers.stream()
                 .filter(c -> c.getCustomerId().equalsIgnoreCase(customerId))
                 .findFirst().orElse(null);     
+    }
+    //Tim kiem de in ra man hinh
+    public void searchCustomer(String keyword) throws InvalidInputException {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            throw new InvalidInputException("Search keyword cannot be empty!");
+        }
+
+        System.out.println("\n--- SEARCH RESULTS ---");
+        boolean found = false;
+        
+        for (Customer c : customers) {
+            // Search only keyword or more...both name & category can find out anf print
+            if (c.getCustomerId().toLowerCase().contains(keyword.toLowerCase())) {
+                System.out.println(c.toString());
+                found = true;
+            }
+        }
+        //bien linh canh
+        if (!found) {
+            System.out.println("No customers found matching keyword: '" + keyword + "'");
+        }
+        System.out.println("----------------------\n");
     }
     //Cap nhat thong tin khach hang (ten va so dien thoai)
     public void updateCustomer(String customerId, String newName, String newPhone)

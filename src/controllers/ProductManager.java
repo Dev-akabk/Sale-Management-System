@@ -31,19 +31,43 @@ public class ProductManager {
             System.out.println(p.toString());
         }
     }
-
+    //find(Product) for update, remove to return out
     public Product findProductById(String productId) throws InvalidInputException {
+        //Validate
         if (productId == null || productId.trim().isEmpty()) {
             throw new InvalidInputException("Invalid product ID!");
         }
+        
+        // Search by Stream API
+        // Loc danh sach ko phan biet hoa thuong, ko co thi tra ve null
+        return products.stream()
+                .filter(p -> p.getProductId().equalsIgnoreCase(productId.trim()))
+                .findFirst()
+                .orElse(null);
+    }
+        
+    //search for print out
+    public void searchProducts(String keyword) throws InvalidInputException {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            throw new InvalidInputException("Search keyword cannot be empty!");
+        }
+
+        System.out.println("\n--- SEARCH RESULTS ---");
+        boolean found = false;
+        
         for (Product p : products) {
-            if (p.getProductId().equalsIgnoreCase(productId)) {
-                return p;
+            // Search only keyword or more...both name & category can find out anf print
+            if (p.getProductName().toLowerCase().contains(keyword.toLowerCase()) || 
+                p.getCategory().toLowerCase().contains(keyword.toLowerCase())) {
+                System.out.println(p.toString());
+                found = true;
             }
         }
-        //return null vi neu return exception thi cac method khac se khong thuc thi duoc,
-        //neu return null thi cac method khac van thuc thi duoc va chi can xu ly null o do la duoc
-        return null;
+        //bien linh canh
+        if (!found) {
+            System.out.println("No products found matching keyword: '" + keyword + "'");
+        }
+        System.out.println("----------------------\n");
     }
     
     

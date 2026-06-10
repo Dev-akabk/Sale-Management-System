@@ -128,6 +128,29 @@ public void displayOrderDetails(String orderId) throws ItemNotFoundException {
                 .findFirst().orElse(null);
     }
 
+    //Tim kiem de in ra man hinh
+    public void searchOrder(String keyword) throws InvalidInputException {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            throw new InvalidInputException("Search keyword cannot be empty!");
+        }
+
+        System.out.println("\n--- SEARCH RESULTS ---");
+        boolean found = false;
+        
+        for (Order o : orders) {
+            // Search by order ID
+            if (o.getOrderId().toLowerCase().contains(keyword.toLowerCase())) {
+                System.out.println(o.toString());
+                found = true;
+            }
+        }
+        //bien linh canh
+        if (!found) {
+            System.out.println("No orders found matching keyword: '" + keyword + "'");
+        }
+        System.out.println("----------------------\n");
+    }
+
 
     public void removeOrderById(String orderId) throws ItemNotFoundException {
         Order findOrder = findOrderById(orderId);

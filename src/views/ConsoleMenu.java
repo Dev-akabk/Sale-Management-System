@@ -31,20 +31,22 @@ public class ConsoleMenu {
         System.out.println("\n--- PRODUCT MANAGEMENT ---");
         System.out.println("1. Add Product");
         System.out.println("2. Display All Products");
-        System.out.println("3. Update Product");
-        System.out.println("4. Remove Product");
-        System.out.println("5. Back to Main Menu");
-        System.out.print("Please choose an option (1-5): ");
+        System.out.println("3. Search Product");
+        System.out.println("4. Update Product");
+        System.out.println("5. Remove Product");
+        System.out.println("0. Back to Main Menu");
+        System.out.print("Please choose an option (0-5): ");
     }
 
     public static void displayCustomerMenu() {
         System.out.println("\n--- CUSTOMER MANAGEMENT ---");
         System.out.println("1. Add Customer");
         System.out.println("2. Display All Customers");
-        System.out.println("3. Update Customer");
-        System.out.println("4. Remove Customer");
-        System.out.println("5. Back to Main Menu");
-        System.out.print("Please choose an option (1-5): ");
+        System.out.println("3. Search Customer");
+        System.out.println("4. Update Customer");
+        System.out.println("5. Remove Customer");
+        System.out.println("0. Back to Main Menu");
+        System.out.print("Please choose an option (0-5): ");
     }
 
     public static void displayOrderMenu() {
@@ -83,6 +85,12 @@ public class ConsoleMenu {
                         productManager.displayAllProducts();
                         break;
                     case "3":
+                        System.out.println("We can search by keyword for both name and category\nPlease input your keyword to search.\n");
+                        
+                        String fKeyword = scanner.nextLine();
+                        productManager.searchProducts(fKeyword);
+                        break;
+                    case "4":
                         System.out.print("Enter Product ID to update: ");
                         String uId = scanner.nextLine();
                         System.out.print("Enter New Name: ");
@@ -91,13 +99,13 @@ public class ConsoleMenu {
                         double uPrice = Double.parseDouble(scanner.nextLine());
                         productManager.updateProduct(uId, uName, uPrice);
                         break;
-                    case "4":
+                    case "5":
                         System.out.print("Enter Product ID to remove: ");
                         String rId = scanner.nextLine();
                         productManager.removeProductById(rId);
                         System.out.println("Product removed successfully.\n");
                         break;
-                    case "5":
+                    case "0":
                         productRunning = false;
                         break;
                     default:
@@ -145,6 +153,12 @@ public class ConsoleMenu {
                         customerManager.displayAllCustomers();
                         break;
                     case "3":
+                        System.out.println("We can search by keyword for customer name\nPlease input your keyword to search.\n");
+                        
+                        String fKeyword = scanner.nextLine();
+                        customerManager.searchCustomer(fKeyword);
+                        break;
+                    case "4":
                         System.out.print("Enter Customer ID to update: ");
                         String uId = scanner.nextLine();
                         System.out.print("Enter New Name: ");
@@ -153,12 +167,12 @@ public class ConsoleMenu {
                         String uPhone = scanner.nextLine();
                         customerManager.updateCustomer(uId, uName, uPhone);
                         break;
-                    case "4":
+                    case "5":
                         System.out.print("Enter Customer ID to remove: ");
                         String rId = scanner.nextLine();
                         customerManager.removeCustomerById(rId);
                         break;
-                    case "5":
+                    case "0":
                         customerRunning = false;
                         break;
                     default:
@@ -209,16 +223,21 @@ public class ConsoleMenu {
                         }
                         break;
                     case "3":
+                        System.out.println("We can search by order ID for privacy and safe\nPlease ask employees to find more...\nOrder ID: ");
+                        String fKeyword = scanner.nextLine();
+                        orderManager.searchOrder(fKeyword);
+                        break;
+                    case "4":
                         System.out.print("Enter Order ID to display details: ");
                         String detailsId = scanner.nextLine();
                         orderManager.displayOrderDetails(detailsId);
                         break;
-                    case "4":
+                    case "5":
                         System.out.print("Enter Order ID to remove: ");
                         String rId = scanner.nextLine();
                         orderManager.removeOrderById(rId);
                         break;
-                    case "5":
+                    case "0":
                         orderRunning = false;
                         break;
                     default:
