@@ -89,7 +89,7 @@ public class CustomerManager {
         
         findCustomer.setName(newName);
         findCustomer.setPhone(newPhone);
-        System.out.println("Customer updated successfully.\n");
+        // Success messaging delegated to view layer
     }
 
 
@@ -101,7 +101,7 @@ public class CustomerManager {
                 "Customer with ID " + customerId + " not found for removal!");
         }
         customers.remove(findCustomer);
-        System.out.println("Customer removed successfully.\n");
+        // Success messaging delegated to view layer
     }
 
     public List<Customer> getCustomers() {

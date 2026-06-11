@@ -12,6 +12,7 @@ public class Accessories extends Product {
         this.size = size;
     }
 
+    @Override
     public double calculateDiscount() {
         return getPrice() * 0.15;
     }

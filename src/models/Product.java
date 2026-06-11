@@ -48,6 +48,11 @@ public class Product {
     public int    getStockQuantity()               { return stockQuantity; }
     public void   setStockQuantity(int qty)        { this.stockQuantity = qty; }
 
+    // Base discount method — subclasses override to provide type-specific discounts
+    public double calculateDiscount() {
+        return 0.0;
+    }
+
     // toString method for easy display
     @Override
     public String toString() {

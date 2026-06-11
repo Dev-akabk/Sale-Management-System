@@ -114,7 +114,7 @@ public void displayOrderDetails(String orderId) throws ItemNotFoundException {
         }
         
         System.out.println("-----------------------------------------");
-        System.out.printf("FINAL TOTAL: $%.2f%n", order.getTotalAmount()); // Lưu ý: Tên hàm getter tổng tiền tùy bạn đặt trong Order.java
+        System.out.printf("FINAL TOTAL: $%.2f%n", order.getTotalAmount()); // getter for order total amount
         System.out.println("=========================================\n");
     }
 

@@ -3,12 +3,15 @@ import exceptions.InvalidInputException;
 
 
 public class Validation {
-    // id cua customer se bat dau bang 'C' va theo sau la 3 chu so (VD: C_001 C_002,...)
-    private static final String CUSTOMER_ID_REGEX = "^C_\\d{3}$";
-    // id cua product se bat dau bang 'P' va theo sau la 3 chu so (VD: P_001, P_002,...)
-    private static final String PRODUCT_ID_REGEX = "^P_\\d{3}$";
-    // id cua order se bat dau bang 'O' va theo sau la 3 chu so (VD: O_001, O_002,...)
-    private static final String ORDER_ID_REGEX = "^O_\\d{3}$";
+    // id cua customer: bat dau bang 'C', co the co '_', theo sau la 2-4 chu so
+    // Chap nhan: C01, C001, C_001, C_0001
+    private static final String CUSTOMER_ID_REGEX = "^C_?\\d{2,4}$";
+    // id cua product: bat dau bang 'P', co the co '_', theo sau la 2-4 chu so
+    // Chap nhan: P01, P001, P_001, P_0001
+    private static final String PRODUCT_ID_REGEX = "^P_?\\d{2,4}$";
+    // id cua order: bat dau bang 'O', co the co '_', theo sau la 2-4 chu so
+    // Chap nhan: O01, O001, O_001, O_0001
+    private static final String ORDER_ID_REGEX = "^O_?\\d{2,4}$";
     //chi ap dung sdt bat dau bang 0 tong co 10 chu so (VD: 0123456789, 0987654321,...)
     private static final String PHONE_NUMBER_REGEX = "^0\\d{9}$"; // la 1 so 0 cong voi 9 so 
     // email co dang la: 1 chuoi ky tu + @ + 1 chuoi ky tu + . + 1 chuoi ky tu (VD: john.doe@example.com)
@@ -42,17 +45,17 @@ public class Validation {
 
     public static void checkCustomerIdFormat(String customerId) throws InvalidInputException {
         if (!customerId.matches(CUSTOMER_ID_REGEX)) {
-            throw new InvalidInputException("Customer ID must follow the format: C_XXX (e.g., C_001)!");
+            throw new InvalidInputException("Customer ID must follow the format: CXX, CXXX, C_XXX, or C_XXXX (e.g., C01, C_001)!");
         }
     }
     public static void checkProductIdFormat(String productId) throws InvalidInputException {
         if (!productId.matches(PRODUCT_ID_REGEX)) {
-            throw new InvalidInputException("Product ID must follow the format: P_XXX (e.g., P_001)!");
+            throw new InvalidInputException("Product ID must follow the format: PXX, PXXX, P_XXX, or P_XXXX (e.g., P01, P_001)!");
         }
     }
     public static void checkOrderIdFormat(String orderId) throws InvalidInputException {
         if (!orderId.matches(ORDER_ID_REGEX)) {
-            throw new InvalidInputException("Order ID must follow the format: O_XXX (e.g., O_001)!");
+            throw new InvalidInputException("Order ID must follow the format: OXX, OXXX, O_XXX, or O_XXXX (e.g., O01, O_001)!");
         }
     }
     public static void checkPhone(String phone) throws InvalidInputException {

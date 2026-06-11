@@ -7,14 +7,24 @@ import exceptions.InvalidInputException;
 import exceptions.ItemNotFoundException;
 import exceptions.OutOfStockException;
 import models.Customer;
+import models.Order;
+import models.OrderDetail;
 import models.Product;
 import models.RegularCustomer;
 import models.VIPCustomer;
 
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class ConsoleMenu {
-    
+
+    // =========================================================================
+    // MAIN MENU
+    // =========================================================================
     public static void displayMainMenu() {
         System.out.println("\n====================================");
         System.out.println("      SALE MANAGEMENT SYSTEM        ");
@@ -22,11 +32,15 @@ public class ConsoleMenu {
         System.out.println("1. Product Management");
         System.out.println("2. Customer Management");
         System.out.println("3. Order Management");
-        System.out.println("4. Exit");
+        System.out.println("4. Reports");
+        System.out.println("5. Exit");
         System.out.println("====================================");
-        System.out.print("Please choose an option (1-4): ");
+        System.out.print("Please choose an option (1-5): ");
     }
 
+    // =========================================================================
+    // SUB-MENUS
+    // =========================================================================
     public static void displayProductMenu() {
         System.out.println("\n--- PRODUCT MANAGEMENT ---");
         System.out.println("1. Add Product");
@@ -53,12 +67,24 @@ public class ConsoleMenu {
         System.out.println("\n--- ORDER MANAGEMENT ---");
         System.out.println("1. Create New Order");
         System.out.println("2. Add Product to Order");
-        System.out.println("3. Display Order Details");
-        System.out.println("4. Remove Order");
-        System.out.println("5. Back to Main Menu");
-        System.out.print("Please choose an option (1-5): ");
+        System.out.println("3. Search Order");
+        System.out.println("4. Display Order Details");
+        System.out.println("5. Remove Order");
+        System.out.println("0. Back to Main Menu");
+        System.out.print("Please choose an option (0-5): ");
     }
 
+    public static void displayReportsMenu() {
+        System.out.println("\n--- REPORTS ---");
+        System.out.println("1. Best-Selling Products (by quantity sold)");
+        System.out.println("2. Top Customers (by total spend)");
+        System.out.println("0. Back to Main Menu");
+        System.out.print("Please choose an option (0-2): ");
+    }
+
+    // =========================================================================
+    // PRODUCT MANAGEMENT
+    // =========================================================================
     public static void manageProducts(ProductManager productManager, Scanner scanner) {
         boolean productRunning = true;
         while (productRunning) {
@@ -80,15 +106,22 @@ public class ConsoleMenu {
                         int stock = Integer.parseInt(scanner.nextLine());
 
                         productManager.addProduct(new Product(id, name, category, price, stock));
+                        System.out.println("Product added successfully.\n");
                         break;
                     case "2":
                         productManager.displayAllProducts();
                         break;
                     case "3":
-                        System.out.println("We can search by keyword for both name and category\nPlease input your keyword to search.\n");
-                        
+                        System.out.println("Search by keyword (matches product name or category):");
                         String fKeyword = scanner.nextLine();
-                        productManager.searchProducts(fKeyword);
+                        List<Product> results = productManager.searchProducts(fKeyword);
+                        System.out.println("\n--- SEARCH RESULTS ---");
+                        if (results.isEmpty()) {
+                            System.out.println("No products found matching keyword: '" + fKeyword + "'");
+                        } else {
+                            results.forEach(p -> System.out.println(p.toString()));
+                        }
+                        System.out.println("----------------------\n");
                         break;
                     case "4":
                         System.out.print("Enter Product ID to update: ");
@@ -98,6 +131,7 @@ public class ConsoleMenu {
                         System.out.print("Enter New Price: ");
                         double uPrice = Double.parseDouble(scanner.nextLine());
                         productManager.updateProduct(uId, uName, uPrice);
+                        System.out.println("Product updated successfully.\n");
                         break;
                     case "5":
                         System.out.print("Enter Product ID to remove: ");
@@ -119,6 +153,9 @@ public class ConsoleMenu {
         }
     }
 
+    // =========================================================================
+    // CUSTOMER MANAGEMENT
+    // =========================================================================
     public static void manageCustomers(CustomerManager customerManager, Scanner scanner) {
         boolean customerRunning = true;
         while (customerRunning) {
@@ -148,13 +185,13 @@ public class ConsoleMenu {
                             int points = Integer.parseInt(scanner.nextLine());
                             customerManager.addCustomer(new RegularCustomer(id, name, phone, address, points));
                         }
+                        System.out.println("Customer added successfully.\n");
                         break;
                     case "2":
                         customerManager.displayAllCustomers();
                         break;
                     case "3":
-                        System.out.println("We can search by keyword for customer name\nPlease input your keyword to search.\n");
-                        
+                        System.out.println("Search customer by ID keyword:");
                         String fKeyword = scanner.nextLine();
                         customerManager.searchCustomer(fKeyword);
                         break;
@@ -166,11 +203,13 @@ public class ConsoleMenu {
                         System.out.print("Enter New Phone: ");
                         String uPhone = scanner.nextLine();
                         customerManager.updateCustomer(uId, uName, uPhone);
+                        System.out.println("Customer updated successfully.\n");
                         break;
                     case "5":
                         System.out.print("Enter Customer ID to remove: ");
                         String rId = scanner.nextLine();
                         customerManager.removeCustomerById(rId);
+                        System.out.println("Customer removed successfully.\n");
                         break;
                     case "0":
                         customerRunning = false;
@@ -186,7 +225,11 @@ public class ConsoleMenu {
         }
     }
 
-    public static void manageOrders(OrderManager orderManager, ProductManager productManager, CustomerManager customerManager, Scanner scanner) {
+    // =========================================================================
+    // ORDER MANAGEMENT
+    // =========================================================================
+    public static void manageOrders(OrderManager orderManager, ProductManager productManager,
+                                    CustomerManager customerManager, Scanner scanner) {
         boolean orderRunning = true;
         while (orderRunning) {
             displayOrderMenu();
@@ -199,12 +242,13 @@ public class ConsoleMenu {
                         String oId = scanner.nextLine();
                         System.out.print("Enter Customer ID: ");
                         String cId = scanner.nextLine();
-                        
+
                         Customer customer = customerManager.findCustomerById(cId);
                         if (customer == null) {
                             System.out.println("ERROR: Customer not found!");
                         } else {
                             orderManager.createOrder(oId, customer);
+                            System.out.println("Order created successfully.\n");
                         }
                         break;
                     case "2":
@@ -215,27 +259,39 @@ public class ConsoleMenu {
                         System.out.print("Enter Quantity: ");
                         int qty = Integer.parseInt(scanner.nextLine());
 
+                        // BR8: quantity must be >= 1 (validated downstream by checkPositiveInt)
                         Product product = productManager.findProductById(pId);
                         if (product == null) {
                             System.out.println("ERROR: Product not found!");
                         } else {
                             orderManager.addProductToOrder(targetOId, product, qty);
+                            System.out.println("Product added to order successfully.\n");
                         }
                         break;
                     case "3":
-                        System.out.println("We can search by order ID for privacy and safe\nPlease ask employees to find more...\nOrder ID: ");
+                        System.out.print("Enter Order ID keyword to search: ");
                         String fKeyword = scanner.nextLine();
                         orderManager.searchOrder(fKeyword);
                         break;
                     case "4":
                         System.out.print("Enter Order ID to display details: ");
                         String detailsId = scanner.nextLine();
-                        orderManager.displayOrderDetails(detailsId);
+                        // BR8: warn if order has no items before displaying
+                        Order targetOrder = orderManager.findOrderById(detailsId);
+                        if (targetOrder == null) {
+                            System.out.println("ERROR: Order not found!");
+                        } else if (targetOrder.getOrderDetails().isEmpty()) {
+                            System.out.println("WARNING (BR8): Order '" + detailsId
+                                    + "' has no items. Please add at least one product before finalizing.");
+                        } else {
+                            orderManager.displayOrderDetails(detailsId);
+                        }
                         break;
                     case "5":
                         System.out.print("Enter Order ID to remove: ");
                         String rId = scanner.nextLine();
                         orderManager.removeOrderById(rId);
+                        System.out.println("Order removed successfully.\n");
                         break;
                     case "0":
                         orderRunning = false;
@@ -249,5 +305,86 @@ public class ConsoleMenu {
                 System.out.println("ERROR: " + e.getMessage());
             }
         }
+    }
+
+    // =========================================================================
+    // REPORTS
+    // =========================================================================
+    public static void showReports(OrderManager orderManager, ProductManager productManager,
+                                   CustomerManager customerManager, Scanner scanner) {
+        boolean reportsRunning = true;
+        while (reportsRunning) {
+            displayReportsMenu();
+            String choice = scanner.nextLine().trim();
+
+            switch (choice) {
+                case "1":
+                    showBestSellingProducts(orderManager);
+                    break;
+                case "2":
+                    showTopCustomers(customerManager);
+                    break;
+                case "0":
+                    reportsRunning = false;
+                    break;
+                default:
+                    System.out.println("Invalid option! Please choose again.");
+            }
+        }
+    }
+
+    /**
+     * Best-Selling Products report: aggregates total quantity sold per product
+     * across all orders using Java Streams, then prints sorted descending by qty.
+     */
+    private static void showBestSellingProducts(OrderManager orderManager) {
+        System.out.println("\n========================================");
+        System.out.println("        BEST-SELLING PRODUCTS           ");
+        System.out.println("========================================");
+
+        // Flatten all order details, group by product name, sum quantities
+        Map<String, Integer> salesMap = new HashMap<>();
+        for (Order order : orderManager.getOrders()) {
+            for (OrderDetail detail : order.getOrderDetails()) {
+                String productName = detail.getProduct().getProductName();
+                salesMap.merge(productName, detail.getQuantity(), Integer::sum);
+            }
+        }
+
+        if (salesMap.isEmpty()) {
+            System.out.println("No sales data available yet.");
+        } else {
+            System.out.printf("%-30s | %-12s%n", "Product Name", "Total Sold");
+            System.out.println("----------------------------------------");
+            salesMap.entrySet().stream()
+                    .sorted(Map.Entry.<String, Integer>comparingByValue(Comparator.reverseOrder()))
+                    .forEach(e -> System.out.printf("%-30s | %d units%n", e.getKey(), e.getValue()));
+        }
+        System.out.println("========================================\n");
+    }
+
+    /**
+     * Top Customers report: sorts customers by totalSpend descending using Streams.
+     */
+    private static void showTopCustomers(CustomerManager customerManager) {
+        System.out.println("\n========================================");
+        System.out.println("           TOP CUSTOMERS                ");
+        System.out.println("========================================");
+
+        List<Customer> sorted = customerManager.getCustomers().stream()
+                .sorted(Comparator.comparingDouble(Customer::getTotalSpend).reversed())
+                .collect(Collectors.toList());
+
+        if (sorted.isEmpty()) {
+            System.out.println("No customer data available yet.");
+        } else {
+            System.out.printf("%-6s | %-20s | %-10s%n", "Rank", "Customer Name", "Total Spend");
+            System.out.println("----------------------------------------");
+            int rank = 1;
+            for (Customer c : sorted) {
+                System.out.printf("%-6d | %-20s | %.2f VND%n", rank++, c.getName(), c.getTotalSpend());
+            }
+        }
+        System.out.println("========================================\n");
     }
 }

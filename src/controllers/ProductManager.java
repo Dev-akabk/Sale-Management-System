@@ -4,6 +4,7 @@ import exceptions.InvalidInputException;
 import exceptions.ItemNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import models.Product;
 
 public class ProductManager {
@@ -21,7 +22,6 @@ public class ProductManager {
         this.products.add(product);
         System.out.println("Product added successfully.\n");
     }
-        
 
     public void displayAllProducts() throws InvalidInputException {
         if (products.isEmpty()) {
@@ -45,45 +45,40 @@ public class ProductManager {
                 .findFirst()
                 .orElse(null);
     }
-        
-    //search for print out
-    public void searchProducts(String keyword) throws InvalidInputException {
+
+    /**
+     * Stream-based keyword search over product name and category.
+     * Returns a filtered list for the view layer to display.
+     *
+     * @param keyword  search term (matched case-insensitively against name and category)
+     * @return list of matching products (empty list if none found)
+     * @throws InvalidInputException if keyword is null or blank
+     */
+    public List<Product> searchProducts(String keyword) throws InvalidInputException {
         if (keyword == null || keyword.trim().isEmpty()) {
             throw new InvalidInputException("Search keyword cannot be empty!");
         }
-
-        System.out.println("\n--- SEARCH RESULTS ---");
-        boolean found = false;
-        
-        for (Product p : products) {
-            // Search only keyword or more...both name & category can find out anf print
-            if (p.getProductName().toLowerCase().contains(keyword.toLowerCase()) || 
-                p.getCategory().toLowerCase().contains(keyword.toLowerCase())) {
-                System.out.println(p.toString());
-                found = true;
-            }
-        }
-        //bien linh canh
-        if (!found) {
-            System.out.println("No products found matching keyword: '" + keyword + "'");
-        }
-        System.out.println("----------------------\n");
+        String lowerKey = keyword.toLowerCase().trim();
+        return products.stream()
+                .filter(p -> p.getProductName().toLowerCase().contains(lowerKey)
+                          || p.getCategory().toLowerCase().contains(lowerKey))
+                .collect(Collectors.toList());
     }
-    
-    
-    public void updateProduct(String productId, String newName, double newPrice) throws ItemNotFoundException, InvalidInputException {
+
+    public void updateProduct(String productId, String newName, double newPrice)
+            throws ItemNotFoundException, InvalidInputException {
         Product foundProduct = findProductById(productId);
         if (foundProduct == null) {
             throw new ItemNotFoundException("Product with ID: " + productId + " not found for update!");
         }
-        
+
         if (newPrice <= 0) {
             throw new InvalidInputException("Updated product price must be greater than 0!");
         }
 
-        foundProduct.setProductName(newName); 
+        foundProduct.setProductName(newName);
         foundProduct.setPrice(newPrice);
-        System.out.println("Product updated successfully.\n");
+        // Success messaging delegated to view layer
     }
 
     public boolean removeProductById(String productId) throws ItemNotFoundException, InvalidInputException {

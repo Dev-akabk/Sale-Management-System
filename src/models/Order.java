@@ -57,23 +57,21 @@ public class Order {
         this.orderDetails.add(new OrderDetail(product, quantity));
     }
 
-    // Calc total
+    // Calc total: applies product-level discounts via getLineTotal(),
+    // then customer-level discount via calculateTotal(subtotal),
+    // and safely accumulates into customer.totalSpend.
     public void calculateTotal() {
         double subtotal = 0.0;
         for (OrderDetail detail : orderDetails) {
-            //san pham * gia tien * so luong
-            subtotal += detail.getProduct().getPrice() * detail.getQuantity();
+            // Each detail already deducts its product-level discount
+            subtotal += detail.getLineTotal();
         }
-        
-        // VIP discount check
-        // if (customer instanceof VIPCustomer) {
-        //     VIPCustomer vip = (VIPCustomer) customer;
-        //     sum = sum * (1 - vip.getDiscountRate());
-        // }
-        
-        //khong can instanceof, chi can goi method calculateTotal cua customer,
-        // no se tu dong check loai khach hang va ap dung discount tuong ung
-        this.totalAmount =  customer.calculateTotal(subtotal);
+
+        // Apply customer-level discount (VIP flat rate or Regular loyalty points)
+        this.totalAmount = customer.calculateTotal(subtotal);
+
+        // Safely accumulate customer total spend
+        customer.setTotalSpend(customer.getTotalSpend() + this.totalAmount);
     }
 
     @Override

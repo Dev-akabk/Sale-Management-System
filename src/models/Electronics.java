@@ -12,6 +12,7 @@ public class Electronics extends Product {
         this.warrantyMonths = warrantyMonths;
     }
 
+    @Override
     public double calculateDiscount() {
         if (getPrice() > 500) {
             return getPrice() * 0.10;

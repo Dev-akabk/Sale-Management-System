@@ -18,9 +18,10 @@ public class OrderDetail {
     public int     getQuantity()             { return quantity; }
     public void    setQuantity(int quantity) { this.quantity = quantity; }
     
-    //Total------
+    // Applies product-level polymorphic discount before multiplying by quantity
     public double getLineTotal() {
-        return product.getPrice() * quantity;
+        double discountedPrice = product.getPrice() - product.calculateDiscount();
+        return discountedPrice * quantity;
     }
     //toString-----
     @Override
