@@ -3,12 +3,12 @@ package controllers;
 import exceptions.InvalidInputException;
 import exceptions.ItemNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import models.Product;
 
 public class ProductManager {
-
     private final List<Product> products;
 
     public ProductManager() {
@@ -82,6 +82,6 @@ public class ProductManager {
     }
 
     public List<Product> getProducts() {
-        return this.products;
+        return Collections.unmodifiableList(this.products);
     }
 }

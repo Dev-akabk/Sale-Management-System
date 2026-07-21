@@ -6,11 +6,12 @@ import exceptions.ItemNotFoundException;
 import utils.Validation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class CustomerManager {
-
+    //leak encapsulation: data can be modified outside => unmodifiable list
     private final List<Customer> customers = new ArrayList<>();
 
     // // Constructor:
@@ -91,7 +92,7 @@ public class CustomerManager {
         // Success messaging delegated to view layer
     }
 
-    public List<Customer> getCustomers() {
-        return this.customers;
+    public List<Customer> getAllCustomers() {
+        return Collections.unmodifiableList(this.customers);
     }
 }

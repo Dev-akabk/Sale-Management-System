@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import utils.Validation;
 
 public class OrderManager {
-
+    //add modifier final to prevent external modification of the list
     private final List<Order> orders = new ArrayList<>();
 
 
@@ -109,6 +109,6 @@ public class OrderManager {
     }
 
     public List<Order> getOrders() {
-        return this.orders;
+        return Collections.unmodifiableList(this.orders);
     }
 }
