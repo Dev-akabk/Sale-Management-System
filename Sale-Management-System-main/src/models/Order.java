@@ -71,7 +71,12 @@ public class Order implements Serializable {
 
         // Apply customer-level discount (VIP flat rate or Regular loyalty points)
         this.totalAmount = customer.calculateTotal(subtotal);
+    }
+    public void finalizeOrder() {
+        // Calculate total amount
+        calculateTotal();
 
+        // Update customer's total spend
         // Safely accumulate customer total spend
         customer.setTotalSpend(customer.getTotalSpend() + this.totalAmount);
     }
