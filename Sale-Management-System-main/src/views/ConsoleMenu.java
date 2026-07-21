@@ -6,7 +6,9 @@ import controllers.ProductManager;
 import exceptions.InvalidInputException;
 import exceptions.ItemNotFoundException;
 import exceptions.OutOfStockException;
+import models.Accessories;
 import models.Customer;
+import models.Electronics;
 import models.Order;
 import models.OrderDetail;
 import models.Product;
@@ -95,19 +97,40 @@ public class ConsoleMenu {
             try {
                 switch (choice) {
                     case "1":
-                        System.out.print("Enter Product ID: ");
+                        System.out.print("Select Product Type (1 - Electronics, 2 - Accessories): ");
+                        String type = scanner.nextLine().trim();
+
+                        System.out.print("Enter ID: ");
                         String id = scanner.nextLine();
+
                         System.out.print("Enter Name: ");
                         String name = scanner.nextLine();
+
                         System.out.print("Enter Category: ");
                         String category = scanner.nextLine();
+
                         System.out.print("Enter Price: ");
                         double price = Double.parseDouble(scanner.nextLine());
+
                         System.out.print("Enter Stock Quantity: ");
                         int stock = Integer.parseInt(scanner.nextLine());
 
-                        productManager.addProduct(new Product(id, name, category, price, stock));
-                        System.out.println("Product added successfully.\n");
+                        Product newProduct;
+
+                        if ("1".equals(type)) {
+                            System.out.print("Enter Warranty (months): ");
+                            int warranty = Integer.parseInt(scanner.nextLine());
+                            newProduct = new Electronics(id, name, category, price, stock, warranty);
+                        } else if ("2".equals(type)) {
+                            System.out.print("Enter Size: ");
+                            String size = scanner.nextLine();
+                            newProduct = new Accessories(id, name, category, price, stock, size);
+                        } else {
+                            System.out.println("Invalid selection! Defaulting to standard Product.");
+                            newProduct = new Product(id, name, category, price, stock);
+                        }
+                        productManager.addProduct(newProduct);
+                        System.out.println("Product added successfully!");
                         break;
                     case "2":
                         displayProductList(productManager.getProducts());
@@ -200,7 +223,7 @@ public class ConsoleMenu {
                         System.out.println("Customer added successfully.\n");
                         break;
                     case "2":
-                        displayCustomerList(customerManager.getCustomers());
+                        displayCustomerList(customerManager.getAllCustomers());
                         break;
                     case "3":
                         System.out.println("Search customer by ID keyword:");
@@ -437,7 +460,7 @@ public class ConsoleMenu {
         System.out.println("           TOP CUSTOMERS                ");
         System.out.println("========================================");
 
-        List<Customer> sorted = customerManager.getCustomers().stream()
+        List<Customer> sorted = customerManager.getAllCustomers().stream()
                 .sorted(Comparator.comparingDouble(Customer::getTotalSpend).reversed())
                 .collect(Collectors.toList());
 

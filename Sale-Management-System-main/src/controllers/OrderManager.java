@@ -6,6 +6,7 @@ import models.Product;
 import exceptions.InvalidInputException;
 import exceptions.ItemNotFoundException;
 import exceptions.OutOfStockException;
+import java.util.Collections;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ import utils.Validation;
 
 public class OrderManager {
     //add modifier final to prevent external modification of the list
-    private final List<Order> orders = new ArrayList<>();
+    private final List<Order> orders = new ArrayList<Order>();
 
 
     //CRUD methods:
