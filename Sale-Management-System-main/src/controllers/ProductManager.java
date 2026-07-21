@@ -64,10 +64,6 @@ public class ProductManager {
             throw new ItemNotFoundException("Product with ID: " + productId + " not found for update!");
         }
 
-        if (newPrice <= 0) {
-            throw new InvalidInputException("Updated product price must be greater than 0!");
-        }
-
         foundProduct.setProductName(newName);
         foundProduct.setPrice(newPrice);
         // Success messaging delegated to view layer
