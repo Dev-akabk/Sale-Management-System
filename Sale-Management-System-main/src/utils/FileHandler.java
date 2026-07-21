@@ -1,8 +1,8 @@
 package utils;
 
-import entities.Customer;
-import entities.Order;
-import entities.Product;
+import models.Customer;
+import models.Order;
+import models.Product;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
