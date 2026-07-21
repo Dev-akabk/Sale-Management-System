@@ -62,7 +62,8 @@ public class Product implements Serializable {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(double price)  throws InvalidInputException {
+        Validation.checkPositiveDouble(price, "Product price");
         this.price = price;
     }
 
@@ -70,7 +71,8 @@ public class Product implements Serializable {
         return stockQuantity;
     }
 
-    public void setStockQuantity(int qty) {
+    public void setStockQuantity(int qty) throws InvalidInputException {
+        Validation.checkPositiveInt(qty, "Stock quantity");
         this.stockQuantity = qty;
     }
 
