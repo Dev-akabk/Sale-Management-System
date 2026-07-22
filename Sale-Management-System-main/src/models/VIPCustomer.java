@@ -27,6 +27,11 @@ public class VIPCustomer extends Customer {
         return baseAmount * (1.0 - discountRate);
     }
 
+    @Override
+    public void applyReward() {
+        // VIP customers do not have a loyalty points system
+    }
+
     // Builds the info block as a String — no I/O performed here.
     // The caller (View layer) decides how and where to print it.
     @Override
