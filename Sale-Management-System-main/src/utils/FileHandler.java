@@ -41,9 +41,7 @@ public class FileHandler {
     File file = new File(DATA_FILE);
     // Kiểm tra nếu file chưa tồn tại (lần đầu chạy hệ thống) thì bỏ qua và trả về null
     if (!file.exists()) {
-      System.out.println(
-        "No historical data available. Initializing new list."
-      );
+      System.out.println("No historical data available. Initializing new list.");
       return null;
     }
 

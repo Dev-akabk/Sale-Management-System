@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import utils.Validation;
+import java.util.Collections;
 
 //LocalDate is used to get current date for easy sort and filter by date
 
@@ -71,7 +72,7 @@ public class Order implements Serializable {
   }
 
   public List<OrderDetail> getOrderDetails() {
-    return orderDetails;
+    return Collections.unmodifiableList(orderDetails);
   }
 
   public void setOrderDetails(List<OrderDetail> d) {
