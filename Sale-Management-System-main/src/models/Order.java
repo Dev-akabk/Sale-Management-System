@@ -114,6 +114,7 @@ public class Order implements Serializable {
     // Update customer's total spend
     // Safely accumulate customer total spend
     customer.setTotalSpend(customer.getTotalSpend() + this.totalAmount);
+    customer.applyReward();
     isFinalized = true;
   }
 
