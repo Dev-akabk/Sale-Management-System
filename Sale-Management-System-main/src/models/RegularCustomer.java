@@ -26,13 +26,23 @@ public class RegularCustomer extends Customer{
     public int  getLoyaltyPoints()             { return loyaltyPoints; }
     public void setLoyaltyPoints(int points)   { this.loyaltyPoints = points; }
 
+    private int pendingPointsToDeduct = 0;
+
     //Override for calculate total amount after discount
     @Override
     public double calculateTotal(double baseAmount) {
         double maxDiscount    = baseAmount * 0.20;
         double earnedDiscount = (loyaltyPoints / 1000.0) * 10_000.0;
         double discount       = Math.min(earnedDiscount, maxDiscount);
+        pendingPointsToDeduct = (int) Math.floor(discount / 10_000.0) * 1000;
         return baseAmount - discount;
+    }
+
+    @Override
+    public void applyReward() {
+        // Deduct the points used for discount
+        setLoyaltyPoints(Math.max(0, getLoyaltyPoints() - pendingPointsToDeduct));
+        pendingPointsToDeduct = 0; // Reset after applying
     }
 
     // Builds the info block as a String — no I/O performed here.

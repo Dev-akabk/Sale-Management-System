@@ -53,6 +53,7 @@ public abstract class Customer implements Serializable{
     -VipCustomer: 10% discount
      */
     public abstract double calculateTotal(double baseAmount);
+    public abstract void applyReward();
 
     // Returns a formatted info block as a String instead of printing directly.
     // Model layer must not perform I/O — the View decides how/where to display it.
